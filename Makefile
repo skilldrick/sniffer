@@ -1,12 +1,8 @@
 # i have no idea what i'm doing
-sniffer : sniffer.o ethernet.o ip.o
-	gcc -o sniffer sniffer.o ethernet.o ip.o -lpcap
 
-sniffer.o : sniffer.c ethernet.h ip.h
-	gcc -c sniffer.c
+objects = sniffer.o ethernet.o ip.o arp.o
 
-ethernet.o : ethernet.c
-	gcc -c ethernet.c
+sniffer : $(objects)
+	gcc -o sniffer $(objects) -lpcap
 
-ip.o : ip.c
-	gcc -c ip.c
+sniffer.o : ethernet.h ip.h
