@@ -19,6 +19,12 @@ void my_callback(u_char *args,const struct pcap_pkthdr* pkthdr,const u_char* pac
     ip_header(payload);
   } else if (ether_type == ETHERTYPE_ARP) {
     arp_packet(payload);
+  } else if (ether_type == 0x86dd) {
+    printf("\tIPv6 packet\n");
+  } else if (ether_type < 0x600) {
+    printf("\tNo EtherType. Ethernet frame size: %d\n", ether_type);
+  } else {
+    printf("\tunknown EtherType %#06x\n", ether_type);
   }
 }
 

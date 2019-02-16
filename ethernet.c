@@ -25,9 +25,8 @@ u_short ethernet_header(const u_char* packet) {
   u_short ether_type;
   mac_address(hdr->source, source);
   mac_address(hdr->dest, dest);
-  ether_type = htons(hdr->ether_type);
 
-  printf("Ethernet header - source: %s destination: %s EtherType: %#06x\n", source, dest, ether_type);
+  printf("Ethernet header - source: %s destination: %s\n", source, dest);
 
-  return ether_type;
+  return htons(hdr->ether_type);
 }
