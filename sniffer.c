@@ -28,6 +28,7 @@ void my_callback(u_char *args,const struct pcap_pkthdr* pkthdr,const u_char* pac
     } else if (ip_protocol == IP_UDP) {
       printf("\t\tUDP\n");
     } else {
+      // Instances of this case so far have been STP (spanning tree protocol)
       printf("\t\tunknown IP protocol %d\n", ip_protocol);
     }
   } else if (ether_type == ETHERTYPE_ARP) {
