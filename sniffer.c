@@ -13,12 +13,24 @@
 void my_callback(u_char *args,const struct pcap_pkthdr* pkthdr,const u_char* packet) {
   u_short ether_type = ethernet_header(packet);
 
-  const u_char* payload = packet + sizeof(struct my_ether_header);
+  const u_char* ether_payload = packet + sizeof(struct my_ether_header);
 
   if (ether_type == ETHERTYPE_IP) {
-    ip_header(payload);
+    struct my_ip_header* ip_hdr = ip_header(ether_payload);
+    u_char ip_protocol = ip_hdr->protocol;
+    u_char* ip_payload = ether_payload + header_length * 4;
+
+    if (ip_protocol == 1) {
+      printf("\t\tICMP\n");
+    } else if (ip_protocol == 6) {
+      printf("\t\tTCP\n");
+    } else if (ip_protocol == 17) {
+      printf("\t\tUDP\n");
+    } else {
+      printf("\t\tunknown IP protocol %d\n", ip_protocol);
+    }
   } else if (ether_type == ETHERTYPE_ARP) {
-    arp_packet(payload);
+    arp_packet(ether_payload);
   } else if (ether_type == 0x86dd) {
     printf("\tIPv6 packet\n");
   } else if (ether_type < 0x600) {
