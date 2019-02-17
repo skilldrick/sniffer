@@ -11,6 +11,14 @@ struct my_ip_header {
   u_char dest_ip[4];
 };
 
+#define IP_HEADER_LENGTH(hdr)  ((hdr)->version_and_ihl & 0x0f)
+#define IP_VERSION(hdr)  (((hdr)->version_and_ihl & 0xf0) >> 4)
+
 void ip_address(u_char* bytes, char* addr);
 
 struct my_ip_header* ip_header(const u_char* packet);
+
+#define IP_ICMP 1
+#define IP_TCP 6
+#define IP_UDP 17
+

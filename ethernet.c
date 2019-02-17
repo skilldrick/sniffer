@@ -1,6 +1,7 @@
 #include <netinet/if_ether.h>
 #include <stdio.h>
 #include "ethernet.h"
+#include "color.h"
 
 void mac_address(u_char* bytes, char* addr) {
   sprintf(
@@ -26,7 +27,8 @@ u_short ethernet_header(const u_char* packet) {
   mac_address(hdr->source, source);
   mac_address(hdr->dest, dest);
 
-  printf("Ethernet header - source: %s destination: %s\n", source, dest);
+  printf("Ethernet header - ");
+  printf("source: " BLUE("%s") " destination: " BLUE("%s\n"), source, dest);
 
   return htons(hdr->ether_type);
 }

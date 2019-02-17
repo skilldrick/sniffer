@@ -7,6 +7,7 @@
 #include "ethernet.h"
 #include "ip.h"
 #include "arp.h"
+#include "color.h"
 
 // we don't really care about pkthdr as that's just a pcap thing
 // packet is the actual ethernet packet
@@ -18,13 +19,13 @@ void my_callback(u_char *args,const struct pcap_pkthdr* pkthdr,const u_char* pac
   if (ether_type == ETHERTYPE_IP) {
     struct my_ip_header* ip_hdr = ip_header(ether_payload);
     u_char ip_protocol = ip_hdr->protocol;
-    u_char* ip_payload = ether_payload + header_length * 4;
+    const u_char* ip_payload = ether_payload + IP_HEADER_LENGTH(ip_hdr) * 4;
 
-    if (ip_protocol == 1) {
+    if (ip_protocol == IP_ICMP) {
       printf("\t\tICMP\n");
-    } else if (ip_protocol == 6) {
+    } else if (ip_protocol == IP_TCP) {
       printf("\t\tTCP\n");
-    } else if (ip_protocol == 17) {
+    } else if (ip_protocol == IP_UDP) {
       printf("\t\tUDP\n");
     } else {
       printf("\t\tunknown IP protocol %d\n", ip_protocol);
@@ -34,7 +35,7 @@ void my_callback(u_char *args,const struct pcap_pkthdr* pkthdr,const u_char* pac
   } else if (ether_type == 0x86dd) {
     printf("\tIPv6 packet\n");
   } else if (ether_type < 0x600) {
-    printf("\tNo EtherType. Ethernet frame size: %d\n", ether_type);
+    printf("\tNo EtherType. Ethernet frame size: " BLUE("%d\n"), ether_type);
   } else {
     printf("\tunknown EtherType %#06x\n", ether_type);
   }
