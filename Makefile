@@ -6,3 +6,6 @@ sniffer : $(objects)
 	gcc -o sniffer $(objects) -lpcap
 
 sniffer.o : ethernet.h ip.h
+
+clean :
+	rm sniffer *.o
