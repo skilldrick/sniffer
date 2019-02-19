@@ -1,3 +1,4 @@
+// https://en.wikipedia.org/wiki/IPv4#Header
 struct my_ip_header {
   u_char version_and_ihl;
   u_char dscp_and_ecn;

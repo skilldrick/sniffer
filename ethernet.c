@@ -3,7 +3,7 @@
 #include "ethernet.h"
 #include "color.h"
 
-void mac_address(u_char* bytes, char* addr) {
+void mac_address(unsigned char* bytes, char* addr) {
   sprintf(
     addr,
     "%x:%x:%x:%x:%x:%x",
@@ -17,7 +17,7 @@ void mac_address(u_char* bytes, char* addr) {
 }
 
 // returns the ether_type, which defines the type of the content
-u_short ethernet_header(const u_char* packet) {
+u_short ethernet_header(const unsigned char* packet) {
   struct my_ether_header *hdr;
   hdr = (struct my_ether_header *) packet;
 

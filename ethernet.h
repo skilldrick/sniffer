@@ -1,3 +1,4 @@
+// https://en.wikipedia.org/wiki/Ethernet_frame#Ethernet_II
 // ethernet header is:
 // 6 bytes of destination MAC address
 // 6 bytes of source MAC address

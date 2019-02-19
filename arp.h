@@ -1,3 +1,4 @@
+// https://en.wikipedia.org/wiki/Address_Resolution_Protocol
 // assuming this is an ipv4 arp packet
 struct my_arp_packet {
   u_short hardware_type;

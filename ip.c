@@ -3,7 +3,7 @@
 #include "ip.h"
 #include "color.h"
 
-void ip_address(u_char* bytes, char* addr) {
+void ip_address(unsigned char* bytes, char* addr) {
   sprintf(
     addr,
     "%d.%d.%d.%d",
@@ -15,7 +15,7 @@ void ip_address(u_char* bytes, char* addr) {
   );
 }
 
-struct my_ip_header* ip_header(const u_char* packet) {
+struct my_ip_header* ip_header(const unsigned char* packet) {
   struct my_ip_header *hdr;
   hdr = (struct my_ip_header *) packet;
 
