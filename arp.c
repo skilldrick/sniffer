@@ -21,19 +21,19 @@ void arp_packet(const u_char* packet) {
     printf(BLUE("%d"), hardware_type);
   }
 
-  printf(" op: " BLUE("%s\n"), ntohs(pkt->operation) == 1 ? "request" : "reply");
+  printf(" Op: " BLUE("%s\n"), ntohs(pkt->operation) == 1 ? "request" : "reply");
 
   mac_address(pkt->sender_mac, mac);
-  printf("\t  sender MAC: " BLUE("%s"), mac);
+  printf("\t  Sender MAC: " BLUE("%s"), mac);
 
   mac_address(pkt->target_mac, mac);
-  printf(" target MAC: " BLUE("%s\n"), mac);
+  printf(" Target MAC: " BLUE("%s\n"), mac);
 
   ip_address(pkt->sender_ip, ip);
-  printf("\t  sender IP: " BLUE("%s"), ip);
+  printf("\t  Sender IP: " BLUE("%s"), ip);
 
   ip_address(pkt->target_ip, ip);
-  printf(" target IP: " BLUE("%s"), ip);
+  printf(" Target IP: " BLUE("%s"), ip);
 
   printf("\n");
 }

@@ -28,7 +28,7 @@ u_short ethernet_header(const unsigned char* packet) {
   mac_address(hdr->dest, dest);
 
   printf("Ethernet header - ");
-  printf("source: " BLUE("%s") " destination: " BLUE("%s\n"), source, dest);
+  printf("Source: " BLUE("%s") " Destination: " BLUE("%s\n"), source, dest);
 
   return htons(hdr->ether_type);
 }

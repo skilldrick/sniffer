@@ -25,8 +25,8 @@ struct my_ip_header* ip_header(const unsigned char* packet) {
   ip_address(hdr->dest_ip, dest);
 
   printf("\tIP header - IPv%d", IP_VERSION(hdr));
-  printf(" source: " BLUE("%s") " destination: " BLUE("%s"), source, dest);
-  printf(" ttl: " BLUE("%d\n"), hdr->ttl);
+  printf(" Source: " BLUE("%s") " Destination: " BLUE("%s"), source, dest);
+  printf(" TTL: " BLUE("%d\n"), hdr->ttl);
 
   //
   /*

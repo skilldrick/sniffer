@@ -23,7 +23,7 @@ void my_callback(unsigned char *args,const struct pcap_pkthdr* pkthdr,const unsi
     const unsigned char* ip_payload = ether_payload + IP_HEADER_LENGTH(ip_hdr) * 4;
 
     if (ip_protocol == IP_ICMP) {
-      icmp_packet(ip_payload);
+      icmp(ip_payload);
     } else if (ip_protocol == IP_TCP) {
       printf("\t\tTCP\n");
     } else if (ip_protocol == IP_UDP) {

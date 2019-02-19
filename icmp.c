@@ -2,9 +2,18 @@
 #include "icmp.h"
 #include "color.h"
 
-void icmp_packet(const unsigned char* packet) {
-  struct my_icmp_packet* pkt;
-  pkt = (struct my_icmp_packet*) packet;
+void icmp(const unsigned char* packet) {
+  struct my_icmp_header* pkt;
+  pkt = (struct my_icmp_header*) packet;
 
-  printf("\tICMP packet: %d %d\n", pkt->type, pkt->code);
+  printf("\t\tICMP: ");
+  if (pkt->type == 0) {
+    printf(BLUE("echo reply"));
+  } else if (pkt->type == 8) {
+    printf(BLUE("echo request"));
+  } else {
+    printf("Type: " BLUE("%d") " Code: " BLUE("%d"), pkt->type, pkt->code);
+  }
+
+  printf("\n");
 }
