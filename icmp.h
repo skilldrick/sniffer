@@ -3,9 +3,13 @@ struct my_icmp_header {
   unsigned char type;
   unsigned char code;
   unsigned short checksum;
-  unsigned long rest;
+};
+
+struct echo {
+  unsigned short identifier;
+  unsigned short sequence_number;
 };
 
 void icmp(const unsigned char* packet);
 
-
+void ping(const unsigned char* packet);

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 #include <netinet/if_ether.h>
 #include "ip.h"
 #include "color.h"
@@ -7,12 +9,40 @@ void ip_address(unsigned char* bytes, char* addr) {
   sprintf(
     addr,
     "%d.%d.%d.%d",
-    // this is janky - should convert between network and host byte order
-    bytes[2],
-    bytes[3],
     bytes[0],
-    bytes[1]
+    bytes[1],
+    bytes[2],
+    bytes[3]
   );
+}
+
+int get_name(char* ip_address, char* output) {
+  struct sockaddr_in addr;
+
+  addr.sin_family = AF_INET;
+  inet_pton(AF_INET, ip_address, &addr.sin_addr);
+
+  int res = getnameinfo(
+      (struct sockaddr*) &addr,
+      sizeof(addr),
+      output,
+      NI_MAXHOST,
+      NULL,
+      0,
+      NI_NAMEREQD
+  );
+
+  return res;
+}
+
+void print_name(char* ip_address) {
+  char node[NI_MAXHOST];
+
+  if (!get_name(ip_address, node)) {
+    printf("(" BLUE("%s") ")", node);
+  } else {
+    printf("(?)");
+  }
 }
 
 struct my_ip_header* ip_header(const unsigned char* packet) {
@@ -24,19 +54,13 @@ struct my_ip_header* ip_header(const unsigned char* packet) {
   ip_address(hdr->source_ip, source);
   ip_address(hdr->dest_ip, dest);
 
-  printf("\tIP header - IPv%d", IP_VERSION(hdr));
-  printf(" Source: " BLUE("%s") " Destination: " BLUE("%s"), source, dest);
-  printf(" TTL: " BLUE("%d\n"), hdr->ttl);
 
-  //
-  /*
-  // print all the bytes
-  printf("\t");
-  for (int i = 0; i < 20; i++) {
-    printf("%02x ", packet[i]);
-  }
-  printf("\n");
-  */
+  printf("\tIP header - IPv%d", IP_VERSION(hdr));
+  printf(" Source: " BLUE("%s "), source);
+  print_name(source);
+  printf(" Destination: " BLUE("%s "), dest);
+  print_name(dest);
+  printf(" TTL: " BLUE("%d\n"), hdr->ttl);
 
   return hdr;
 }
