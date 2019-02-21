@@ -8,6 +8,8 @@
 #include "ip.h"
 #include "arp.h"
 #include "icmp.h"
+#include "tcp.h"
+#include "udp.h"
 #include "color.h"
 
 // we don't really care about pkthdr as that's just a pcap thing
@@ -25,9 +27,9 @@ void my_callback(unsigned char *args,const struct pcap_pkthdr* pkthdr,const unsi
     if (ip_protocol == IP_ICMP) {
       icmp(ip_payload);
     } else if (ip_protocol == IP_TCP) {
-      printf("\t\tTCP\n");
+      tcp_header(ip_payload);
     } else if (ip_protocol == IP_UDP) {
-      printf("\t\tUDP\n");
+      udp_header(ip_payload);
     } else {
       printf("\t\tunknown IP protocol %d\n", ip_protocol);
     }

@@ -22,6 +22,7 @@ int get_name(char* ip_address, char* output) {
   addr.sin_family = AF_INET;
   inet_pton(AF_INET, ip_address, &addr.sin_addr);
 
+  // http://man7.org/linux/man-pages/man3/getnameinfo.3.html
   int res = getnameinfo(
       (struct sockaddr*) &addr,
       sizeof(addr),

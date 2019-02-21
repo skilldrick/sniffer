@@ -13,7 +13,7 @@ void arp_packet(const u_char* packet) {
   char ip[16];
   u_short hardware_type = ntohs(pkt->hardware_type);
 
-  printf("\tARP packet - hardware type: ");
+  printf("\tARP packet - Hardware type: ");
 
   if (hardware_type == 1) {
     printf(BLUE("ethernet"));
