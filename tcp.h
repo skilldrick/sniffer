@@ -11,5 +11,8 @@ struct my_tcp_header {
 };
 
 #define TCP_DATA_OFFSET_BYTES(hdr)  ((((hdr)->data_offset_etc & 0xf0) >> 4) * 4)
+#define TCP_FIN(hdr)  ((hdr)->flags & (1 << 0))
+#define TCP_SYN(hdr)  ((hdr)->flags & (1 << 1))
+#define TCP_ACK(hdr)  ((hdr)->flags & (1 << 4))
 
 void tcp_header(const uint8_t* packet);

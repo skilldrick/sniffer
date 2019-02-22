@@ -3,7 +3,7 @@
 objects = sniffer.o ethernet.o ip.o arp.o icmp.o udp.o tcp.o
 
 sniffer : $(objects)
-	cc -o sniffer $(objects) -lpcap
+	cc -Wall -o sniffer $(objects) -lpcap
 
 sniffer.o : ethernet.h ip.h arp.h icmp.h udp.h tcp.h
 
