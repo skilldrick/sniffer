@@ -3,7 +3,7 @@
 #include "icmp.h"
 #include "color.h"
 
-void icmp(const unsigned char* packet) {
+void icmp(const uint8_t* packet) {
   struct my_icmp_header* pkt;
   pkt = (struct my_icmp_header*) packet;
 
@@ -23,7 +23,7 @@ void icmp(const unsigned char* packet) {
   printf("\n");
 }
 
-void ping(const unsigned char* packet) {
+void ping(const uint8_t* packet) {
   struct echo* e;
   e = (struct echo*) packet;
 

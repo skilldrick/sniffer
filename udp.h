@@ -1,8 +1,8 @@
 struct my_udp_header {
-  unsigned short source_port;
-  unsigned short dest_port;
-  unsigned short length;
-  unsigned short checksum;
+  uint16_t source_port;
+  uint16_t dest_port;
+  uint16_t length;
+  uint16_t checksum;
 };
 
-void udp_header(const unsigned char* packet);
+void udp_header(const uint8_t* packet);

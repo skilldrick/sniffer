@@ -3,7 +3,7 @@
 #include "udp.h"
 #include "color.h"
 
-void udp_header(const unsigned char* packet) {
+void udp_header(const uint8_t* packet) {
   struct my_udp_header* hdr;
   hdr = (struct my_udp_header *) packet;
   printf("\t\tUDP - Source port: " BLUE("%d"), htons(hdr->source_port));

@@ -1,15 +1,15 @@
 // https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol
 struct my_icmp_header {
-  unsigned char type;
-  unsigned char code;
-  unsigned short checksum;
+  uint8_t type;
+  uint8_t code;
+  uint16_t checksum;
 };
 
 struct echo {
-  unsigned short identifier;
-  unsigned short sequence_number;
+  uint16_t identifier;
+  uint16_t sequence_number;
 };
 
-void icmp(const unsigned char* packet);
+void icmp(const uint8_t* packet);
 
-void ping(const unsigned char* packet);
+void ping(const uint8_t* packet);

@@ -4,11 +4,13 @@
 // 6 bytes of source MAC address
 // 2 bytes of EtherType
 struct my_ether_header {
-  u_char dest[6];
-  u_char source[6];
-  u_short ether_type;
+  uint8_t dest[6];
+  uint8_t source[6];
+  uint16_t ether_type;
 };
 
-void mac_address(u_char* bytes, char* addr);
+void mac_address(uint8_t* bytes, char* addr);
 
-u_short ethernet_header(const u_char* packet);
+uint16_t ethernet_header(const uint8_t* packet);
+
+#define ETHERTYPE_IPV6 0x86dd

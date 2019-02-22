@@ -14,15 +14,15 @@
 
 // we don't really care about pkthdr as that's just a pcap thing
 // packet is the actual ethernet packet
-void my_callback(unsigned char *args,const struct pcap_pkthdr* pkthdr,const unsigned char* packet) {
-  u_short ether_type = ethernet_header(packet);
+void my_callback(uint8_t *args, const struct pcap_pkthdr* pkthdr, const uint8_t* packet) {
+  uint16_t ether_type = ethernet_header(packet);
 
-  const unsigned char* ether_payload = packet + sizeof(struct my_ether_header);
+  const uint8_t* ether_payload = packet + sizeof(struct my_ether_header);
 
   if (ether_type == ETHERTYPE_IP) {
     struct my_ip_header* ip_hdr = ip_header(ether_payload);
-    unsigned char ip_protocol = ip_hdr->protocol;
-    const unsigned char* ip_payload = ether_payload + IP_HEADER_LENGTH(ip_hdr) * 4;
+    uint8_t ip_protocol = ip_hdr->protocol;
+    const uint8_t* ip_payload = ether_payload + IP_HEADER_LENGTH(ip_hdr) * 4;
 
     if (ip_protocol == IP_ICMP) {
       icmp(ip_payload);
@@ -35,7 +35,7 @@ void my_callback(unsigned char *args,const struct pcap_pkthdr* pkthdr,const unsi
     }
   } else if (ether_type == ETHERTYPE_ARP) {
     arp_packet(ether_payload);
-  } else if (ether_type == 0x86dd) {
+  } else if (ether_type == ETHERTYPE_IPV6) {
     printf("\tIPv6 packet\n");
   } else if (ether_type < 0x600) {
     // Instances of this case so far have been STP (spanning tree protocol)

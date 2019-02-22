@@ -7,5 +7,7 @@ sniffer : $(objects)
 
 sniffer.o : ethernet.h ip.h arp.h icmp.h udp.h tcp.h
 
+tcp.o : tcp.h
+
 clean :
 	rm sniffer *.o

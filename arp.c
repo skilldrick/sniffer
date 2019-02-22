@@ -6,12 +6,12 @@
 #include "color.h"
 
 
-void arp_packet(const u_char* packet) {
+void arp_packet(const uint8_t* packet) {
   struct my_arp_packet *pkt;
   pkt = (struct my_arp_packet *) packet;
   char mac[18];
   char ip[16];
-  u_short hardware_type = ntohs(pkt->hardware_type);
+  uint16_t hardware_type = ntohs(pkt->hardware_type);
 
   printf("\tARP packet - Hardware type: ");
 
