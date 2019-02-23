@@ -1,3 +1,7 @@
+#pragma once
+
+#include "stdint.h"
+
 // https://en.wikipedia.org/wiki/IPv4#Header
 struct my_ip_header {
   uint8_t version_and_ihl;

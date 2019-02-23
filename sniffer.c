@@ -27,7 +27,7 @@ void my_callback(uint8_t *args, const struct pcap_pkthdr* pkthdr, const uint8_t*
     if (ip_protocol == IP_ICMP) {
       icmp(ip_payload);
     } else if (ip_protocol == IP_TCP) {
-      tcp_header(ip_payload);
+      tcp_header(ip_payload, ip_hdr);
     } else if (ip_protocol == IP_UDP) {
       udp_header(ip_payload);
     } else {
