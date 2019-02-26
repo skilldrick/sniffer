@@ -19,9 +19,7 @@ int length(struct Connection* head) {
 struct Connection* find(struct Connection* head, char* key) {
   struct Connection* cursor = head;
 
-  printf("\ncursor->key: %s key: %s\n", cursor->key, key);
   while (cursor) {
-    printf("\ncursor->key: %s key: %s\n", cursor->key, key);
     if (!strcmp(cursor->key, key)) {
       return cursor;
     }
@@ -32,7 +30,6 @@ struct Connection* find(struct Connection* head, char* key) {
   return NULL;
 }
 
-//TODO: all these methods should return head
 struct Connection* new_connection(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr) {
   char key[50];
   generate_key(ip_hdr, tcp_hdr, key);
@@ -45,17 +42,10 @@ struct Connection* new_connection(struct my_ip_header* ip_hdr, struct my_tcp_hea
 
   strcpy(conn->key, key);
 
-  conn->next = connections;
-  connections = conn;
-
-  printf("\nkey: %s num: %d\n", conn->key, length(connections));
-
-  printf("\nPointer: %p\n", connections);
-
   return conn;
 };
 
-// this will ip:port ip:port, e.g.
+// this will be ip:port ip:port, e.g.
 // 111.111.111.111:80 222.222.222.222:45678
 void generate_key(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr, char* key) {
   ip_address(ip_hdr->source_ip, key);
@@ -65,4 +55,10 @@ void generate_key(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr, ch
   sprintf(key + strlen(key), ":%d", ntohs(tcp_hdr->dest_port));
 }
 
+void generate_reverse_key(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr, char* key) {
+  ip_address(ip_hdr->dest_ip, key);
+  sprintf(key + strlen(key), ":%d ", ntohs(tcp_hdr->dest_port));
 
+  ip_address(ip_hdr->source_ip, key + strlen(key));
+  sprintf(key + strlen(key), ":%d", ntohs(tcp_hdr->source_port));
+}
