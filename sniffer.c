@@ -3,6 +3,7 @@
 #include <pcap.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <netinet/if_ether.h>
 #include "ethernet.h"
 #include "ip.h"
@@ -22,12 +23,25 @@ void my_callback(uint8_t *args, const struct pcap_pkthdr* pkthdr, const uint8_t*
   if (ether_type == ETHERTYPE_IP) {
     struct my_ip_header* ip_hdr = ip_header(ether_payload);
     uint8_t ip_protocol = ip_hdr->protocol;
-    const uint8_t* ip_payload = ether_payload + IP_HEADER_LENGTH(ip_hdr) * 4;
+    int ip_header_length = IP_HEADER_LENGTH_BYTES(ip_hdr);
+    const uint8_t* ip_payload = ether_payload + ip_header_length;
 
     if (ip_protocol == IP_ICMP) {
       icmp(ip_payload);
     } else if (ip_protocol == IP_TCP) {
-      tcp_header(ip_payload, ip_hdr);
+      struct my_tcp_header* tcp_hdr = tcp_header(ip_payload, ip_hdr);
+      int tcp_data_offset = TCP_DATA_OFFSET_BYTES(tcp_hdr);
+      int tcp_and_ip_offset = tcp_data_offset + ip_header_length;
+      int tcp_payload_length = ip_hdr->total_length - tcp_and_ip_offset;
+      const uint8_t* tcp_payload = ip_payload + tcp_data_offset;
+
+      char payload[tcp_payload_length + 1];
+      strncpy(payload, (char *) tcp_payload, tcp_payload_length);
+
+      if (!strncmp(payload, "HTTP/1.1", 8)) {
+        printf("Payload: \n%s\n", payload);
+      }
+
     } else if (ip_protocol == IP_UDP) {
       udp_header(ip_payload);
     } else {

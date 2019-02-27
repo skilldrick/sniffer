@@ -19,4 +19,4 @@ struct my_tcp_header {
 #define TCP_SYN(hdr)  ((hdr)->flags & (1 << 1))
 #define TCP_ACK(hdr)  ((hdr)->flags & (1 << 4))
 
-void tcp_header(const uint8_t* packet, struct my_ip_header* ip_hdr);
+struct my_tcp_header* tcp_header(const uint8_t* packet, struct my_ip_header* ip_hdr);

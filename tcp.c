@@ -7,7 +7,7 @@
 // linked list of connections
 static struct Connection* connections = NULL;
 
-void tcp_header(const uint8_t* packet, struct my_ip_header* ip_hdr) {
+struct my_tcp_header* tcp_header(const uint8_t* packet, struct my_ip_header* ip_hdr) {
   struct my_tcp_header* hdr;
   hdr = (struct my_tcp_header *) packet;
   printf("\t\tTCP - Source port: " BLUE("%d"), ntohs(hdr->source_port));
@@ -66,7 +66,7 @@ void tcp_header(const uint8_t* packet, struct my_ip_header* ip_hdr) {
     printf(" Relative acknowledgement number: " BLUE("%u"), ntohl(hdr->ack_number) - conn->ack_offset);
   }
 
-  printf("\n\t\t\tData offset: " BLUE("%d bytes"), TCP_DATA_OFFSET_BYTES(hdr));
-
   printf("\n");
+
+  return hdr;
 }
