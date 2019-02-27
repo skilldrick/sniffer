@@ -30,10 +30,7 @@ struct Connection* find(struct Connection* head, char* key) {
   return NULL;
 }
 
-struct Connection* new_connection(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr) {
-  char key[50];
-  generate_key(ip_hdr, tcp_hdr, key);
-
+struct Connection* new_connection(char* key) {
   struct Connection* conn = (struct Connection*) malloc(sizeof(struct Connection));
   if(conn == NULL) {
     printf("Error creating Connection.\n");
@@ -45,20 +42,20 @@ struct Connection* new_connection(struct my_ip_header* ip_hdr, struct my_tcp_hea
   return conn;
 };
 
-// this will be ip:port ip:port, e.g.
-// 111.111.111.111:80 222.222.222.222:45678
-void generate_key(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr, char* key) {
-  ip_address(ip_hdr->source_ip, key);
-  sprintf(key + strlen(key), ":%d ", ntohs(tcp_hdr->source_port));
-
-  ip_address(ip_hdr->dest_ip, key + strlen(key));
-  sprintf(key + strlen(key), ":%d", ntohs(tcp_hdr->dest_port));
+void generate_forward_key(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr, char* key) {
+  generate_key(ip_hdr->source_ip, ip_hdr->dest_ip, tcp_hdr->source_port, tcp_hdr->dest_port, key);
 }
 
 void generate_reverse_key(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr, char* key) {
-  ip_address(ip_hdr->dest_ip, key);
-  sprintf(key + strlen(key), ":%d ", ntohs(tcp_hdr->dest_port));
+  generate_key(ip_hdr->dest_ip, ip_hdr->source_ip, tcp_hdr->dest_port, tcp_hdr->source_port, key);
+}
 
-  ip_address(ip_hdr->source_ip, key + strlen(key));
-  sprintf(key + strlen(key), ":%d", ntohs(tcp_hdr->source_port));
+// this will be ip:port ip:port, e.g.
+// 111.111.111.111:80=>222.222.222.222:45678
+void generate_key(uint8_t* source_ip, uint8_t* dest_ip, uint16_t source_port, uint16_t dest_port, char* key) {
+  ip_address(source_ip, key);
+  sprintf(key + strlen(key), ":%d=>", ntohs(source_port));
+
+  ip_address(dest_ip, key + strlen(key));
+  sprintf(key + strlen(key), ":%d", ntohs(dest_port));
 }

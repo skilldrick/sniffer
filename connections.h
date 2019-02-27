@@ -10,12 +10,14 @@ struct Connection {
   struct Connection* next;
 };
 
-struct Connection* new_connection(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr);
-
-int length(struct Connection* head);
+struct Connection* new_connection(char* key);
 
 struct Connection* find(struct Connection* head, char* key);
 
-void generate_key(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr, char* key);
+int length(struct Connection* head);
+
+void generate_forward_key(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr, char* key);
 
 void generate_reverse_key(struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr, char* key);
+
+void generate_key(uint8_t* source_ip, uint8_t* dest_ip, uint16_t source_port, uint16_t dest_port, char* key);
