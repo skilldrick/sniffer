@@ -16,7 +16,13 @@ int length(struct Connection* head) {
   return i;
 }
 
-struct Connection* find(struct Connection* head, char* key) {
+struct Connection* find(struct Connection* head, struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr) {
+  char key[50];
+  generate_forward_key(ip_hdr, tcp_hdr, key);
+  return find_by_key(head, key);
+}
+
+struct Connection* find_by_key(struct Connection* head, char* key) {
   struct Connection* cursor = head;
 
   while (cursor) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdio.h>
 #include "ip.h"
 
 struct my_tcp_header {
@@ -20,3 +21,8 @@ struct my_tcp_header {
 #define TCP_ACK(hdr)  ((hdr)->flags & (1 << 4))
 
 struct my_tcp_header* tcp_header(const uint8_t* packet, struct my_ip_header* ip_hdr);
+
+// linked list of connections
+static struct Connection* connections = NULL;
+
+struct Connection* get_connections();

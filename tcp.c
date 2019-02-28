@@ -4,9 +4,6 @@
 #include "color.h"
 #include "connections.h"
 
-// linked list of connections
-static struct Connection* connections = NULL;
-
 struct my_tcp_header* tcp_header(const uint8_t* packet, struct my_ip_header* ip_hdr) {
   struct my_tcp_header* hdr;
   hdr = (struct my_tcp_header *) packet;
@@ -44,7 +41,7 @@ struct my_tcp_header* tcp_header(const uint8_t* packet, struct my_ip_header* ip_
     if (TCP_ACK(hdr)) {
       char reverse_key[50];
       generate_reverse_key(ip_hdr, hdr, reverse_key);
-      struct Connection* reverse_conn = find(connections, reverse_key);
+      struct Connection* reverse_conn = find_by_key(connections, reverse_key);
       if (conn && reverse_conn) {
         // set the ack offsets to the seq offsets of the opposite connection
         conn->ack_offset = reverse_conn->seq_offset;
@@ -53,7 +50,7 @@ struct my_tcp_header* tcp_header(const uint8_t* packet, struct my_ip_header* ip_
     }
   } else {
     // If not a new connection, look up the existing connection
-    conn = find(connections, key);
+    conn = find_by_key(connections, key);
   }
 
   if (conn) {
@@ -69,4 +66,8 @@ struct my_tcp_header* tcp_header(const uint8_t* packet, struct my_ip_header* ip_
   printf("\n");
 
   return hdr;
+}
+
+struct Connection* get_connections() {
+  return connections;
 }

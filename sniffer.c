@@ -11,6 +11,7 @@
 #include "icmp.h"
 #include "tcp.h"
 #include "udp.h"
+#include "http.h"
 #include "color.h"
 
 // we don't really care about pkthdr as that's just a pcap thing
@@ -30,18 +31,10 @@ void my_callback(uint8_t *args, const struct pcap_pkthdr* pkthdr, const uint8_t*
       icmp(ip_payload);
     } else if (ip_protocol == IP_TCP) {
       struct my_tcp_header* tcp_hdr = tcp_header(ip_payload, ip_hdr);
-      int tcp_data_offset = TCP_DATA_OFFSET_BYTES(tcp_hdr);
-      int tcp_and_ip_offset = tcp_data_offset + ip_header_length;
-      int tcp_payload_length = ip_hdr->total_length - tcp_and_ip_offset;
-      const uint8_t* tcp_payload = ip_payload + tcp_data_offset;
 
-      char payload[tcp_payload_length + 1];
-      strncpy(payload, (char *) tcp_payload, tcp_payload_length);
-
-      if (!strncmp(payload, "HTTP/1.1", 8)) {
-        printf("Payload: \n%s\n", payload);
+      if (ntohs(tcp_hdr->source_port) == 80) {
+        http(ip_hdr, tcp_hdr);
       }
-
     } else if (ip_protocol == IP_UDP) {
       udp_header(ip_payload);
     } else {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdlib.h>
 #include "ip.h"
 #include "tcp.h"
 
@@ -12,7 +13,9 @@ struct Connection {
 
 struct Connection* new_connection(char* key);
 
-struct Connection* find(struct Connection* head, char* key);
+struct Connection* find(struct Connection* head, struct my_ip_header* ip_hdr, struct my_tcp_header* tcp_hdr);
+
+struct Connection* find_by_key(struct Connection* head, char* key);
 
 int length(struct Connection* head);
 
